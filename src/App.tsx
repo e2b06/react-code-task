@@ -1,10 +1,11 @@
 import React from "react";
 import "./styles/main.scss";
+import { SideMenu } from "./components/SideMenu";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header">
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -16,7 +17,10 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
+
+      <h1>Welcome to React Router!</h1>
+      <SideMenu />
     </div>
   );
 }
