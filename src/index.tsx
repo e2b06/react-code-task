@@ -1,15 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import { BrowserRouter } from "react-router-dom";
-import { Routes, Route } from "react-router-dom";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import { BrowserRouter } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
 // import { ContactList } from "./components/ContactList";
-import { DummyComponent } from "./components/DummyComponent";
+import { DummyComponent } from './components/DummyComponent'
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
@@ -21,7 +19,8 @@ root.render(
             element={<DummyComponent title="chaaracter" />}
           />
         </Route>
+        <Route path="*" element={<DummyComponent title="Not Found" />} />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
-);
+  </React.StrictMode>,
+)
