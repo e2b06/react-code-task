@@ -69,7 +69,7 @@ export const ContactList: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="component-contact-list w-auto max-w-[500px] bg-sky-500 overflow-auto">
+      <div className="component-contact-list w-auto min-w-[300px] bg-sky-500 overflow-auto">
         <div className="p-6">
           <h1 className="mb-4 font-bold text-xl">Contact</h1>
 
@@ -91,9 +91,10 @@ export const ContactList: React.FC<{}> = () => {
                 <React.Fragment key={index}>
                   <ContactItem
                     name={name}
-                    imgUrl={image}
+                    image={image}
                     species={species}
                     id={id}
+                    type="link"
                   />
                 </React.Fragment>
               )
