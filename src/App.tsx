@@ -6,22 +6,19 @@ import { Routes, Route } from 'react-router-dom'
 import './styles/main.scss'
 
 //  components
+import { ContactList } from './components/ContactList'
 import { DummyComponent } from './components/DummyComponent'
 
 //  Page
 import { Home } from './pages/Home'
 
-//  Home Page
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}>
-            <Route
-              path="contact"
-              element={<DummyComponent title="contact" />}
-            />
+            <Route path="contact" element={<ContactList />} />
 
             <Route
               path="contact:id"
