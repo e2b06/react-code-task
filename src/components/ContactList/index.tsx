@@ -69,7 +69,7 @@ export const ContactList: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="contact-list bg-sky-500">
+      <div className="component-contact-list bg-sky-500 overflow-auto">
         <div className="p-6">
           <h1 className="mb-4">Contact</h1>
           <input
@@ -83,7 +83,7 @@ export const ContactList: React.FC<{}> = () => {
         {isLoading && <Loading />}
 
         {contactList && contactList.length !== 0 && (
-          <div className="grid gap-5 p-5">
+          <div className="contact-container grid gap-5 p-5">
             {contactList.map(({ name, image, species, id }, index) => {
               return (
                 <React.Fragment key={index}>
