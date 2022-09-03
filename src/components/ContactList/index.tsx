@@ -69,7 +69,7 @@ export const ContactList: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="component-contact-list w-auto min-w-[300px] bg-sky-500 overflow-auto">
+      <div className="component-contact-list w-full bg-sky-500 overflow-auto">
         <div className="p-6">
           <h1 className="mb-4 font-bold text-xl">Contact</h1>
 
