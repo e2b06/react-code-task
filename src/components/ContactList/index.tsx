@@ -71,9 +71,11 @@ export const ContactList: React.FC<{}> = () => {
     <>
       <div className="component-contact-list bg-sky-500 overflow-auto">
         <div className="p-6">
-          <h1 className="mb-4">Contact</h1>
+          <h1 className="mb-4 font-bold text-xl">Contact</h1>
+
           <input
             type="text"
+            className="p-1 rounded-md text-sky-500"
             placeholder="Saerch Characters"
             value={searchInput}
             onChange={onChange}
