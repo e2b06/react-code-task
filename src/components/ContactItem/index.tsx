@@ -11,11 +11,11 @@ interface ContactItemProps {
 
 const style = {
   header: {
-    icon: 'w-auto max-h-[150px] rounded-full mr-5',
-    name: 'font-bold text-2xl',
+    icon: 'w-auto max-h-[50px] mr-4 rounded-full md:max-h-[150px] md:mr-7',
+    name: 'text-md font-bold md:text-2xl',
   },
   link: {
-    icon: 'w-auto max-h-[100px] rounded-full mr-5',
+    icon: 'w-auto max-h-[50px] mr-5 rounded-full md:max-h-[100px]',
     name: '',
   },
 }
