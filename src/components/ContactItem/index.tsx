@@ -27,7 +27,7 @@ export const ContactItem: React.FC<ContactItemProps> = ({
   id,
   type,
 }) => {
-  const commonClass = 'component-contact-item flex items-center bg-sky-700'
+  const commonClass = 'component-contact-item flex items-center'
 
   const content = useMemo(() => {
     return (
