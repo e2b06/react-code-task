@@ -56,7 +56,7 @@ export const ContactList: React.FC<{}> = () => {
 
     const filteredContactList = contactListInstance.filter(({ name }) => {
       const formatString = (value: string) => {
-        return value.toLowerCase().replace(' ', '')
+        return value.toLowerCase().replaceAll(' ', '')
       }
       const formatedSearchInput = formatString(searchInput)
       const formatedName = formatString(name)
