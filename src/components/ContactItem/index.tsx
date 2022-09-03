@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 interface ContactItemProps {
   image: string
@@ -42,9 +42,9 @@ export const ContactItem: React.FC<ContactItemProps> = ({
   }, [])
 
   return type === 'link' ? (
-    <NavLink to={`/contact/${id}`} key={id} className={commonClass}>
+    <Link to={`/contact/${id}`} key={id} className={commonClass}>
       {content}
-    </NavLink>
+    </Link>
   ) : (
     <div className={commonClass}>{content}</div>
   )
