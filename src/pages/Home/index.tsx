@@ -4,7 +4,7 @@ import { SideMenu } from '../../components/SideMenu'
 
 export const Home: React.FC<{}> = () => {
   return (
-    <div className="home flex h-full">
+    <div className="page-home flex h-full">
       <SideMenu />
     </div>
   )
