@@ -21,7 +21,7 @@ function App() {
             <Route path="contact" element={<ContactList />} />
 
             <Route
-              path="contact:id"
+              path="contact/:id"
               element={<DummyComponent title="character" />}
             />
           </Route>
