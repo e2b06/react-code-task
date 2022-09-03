@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 
 export const DummyComponent: React.FC<{ title: string }> = ({ title }) => {
   return (
     <>
-      <div>
-        <h1>this is {title} component</h1>
+      <div className={`${title} h-full bg-black`}>
+        <h1 className="text-white">this is {title} component</h1>
       </div>
     </>
-  );
-};
+  )
+}
