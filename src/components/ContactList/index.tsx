@@ -69,13 +69,13 @@ export const ContactList: React.FC<{}> = () => {
 
   return (
     <>
-      <div className="component-contact-list bg-sky-500 overflow-auto">
+      <div className="component-contact-list w-auto max-w-[500px] bg-sky-500 overflow-auto">
         <div className="p-6">
           <h1 className="mb-4 font-bold text-xl">Contact</h1>
 
           <input
             type="text"
-            className="p-1 rounded-md text-sky-500"
+            className="p-1 rounded-md w-full text-sky-500"
             placeholder="Saerch Characters"
             value={searchInput}
             onChange={onChange}
@@ -85,7 +85,7 @@ export const ContactList: React.FC<{}> = () => {
         {isLoading && <Loading />}
 
         {contactList && contactList.length !== 0 && (
-          <div className="grid gap-5 p-5">
+          <div className="grid gap-7 p-5">
             {contactList.map(({ name, image, species, id }, index) => {
               return (
                 <React.Fragment key={index}>
