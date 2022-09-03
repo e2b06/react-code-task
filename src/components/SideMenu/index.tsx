@@ -1,12 +1,18 @@
-import React from "react";
-import { Outlet, Link } from "react-router-dom";
+import React from 'react'
+import { Outlet, Link } from 'react-router-dom'
 
 export const SideMenu: React.FC<{}> = () => {
   return (
-    <div>
-      <h1>Side Menu Header</h1>
-      <Link to="/contact"> contact </Link>
+    <>
+      <div className="side-menu flex flex-col h-full min-w-[200px] p-6 text-center bg-black text-white">
+        <Link to="/" className="p-2 mb-5 font-bold text-xl">
+          Rick and Morty
+        </Link>
+        <Link to="/contact" className="p-2 hover:text-sky-700">
+          Contact
+        </Link>
+      </div>
       <Outlet />
-    </div>
-  );
-};
+    </>
+  )
+}
