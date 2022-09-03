@@ -2,7 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import { ContactItem } from '../ContactItem'
 
-const apiPath = 'https://rickandmortyapi.com/api/character'
+const type = 'character'
+const currentPage = 1
+const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
 
 export const ContactList: React.FC<{}> = () => {
   const [contactList, SetContactList] = useState([])
