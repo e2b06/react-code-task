@@ -83,7 +83,7 @@ export const ContactList: React.FC<{}> = () => {
         {isLoading && <Loading />}
 
         {contactList && contactList.length !== 0 && (
-          <div className="contact-container grid gap-5 p-5">
+          <div className="grid gap-5 p-5">
             {contactList.map(({ name, image, species, id }, index) => {
               return (
                 <React.Fragment key={index}>
