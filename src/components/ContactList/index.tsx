@@ -2,82 +2,58 @@ import React, { useState, useEffect, useRef } from 'react'
 
 import { ContactItem } from '../ContactItem'
 
-const dummyList = [
-  {
-    id: 1,
-    name: 'Rick Sanchez',
-    status: 'Alive',
-    species: 'Human',
-    type: '',
-    gender: 'Male',
-    origin: {
-      name: 'Earth',
-      url: 'https://rickandmortyapi.com/api/location/1',
-    },
-    location: {
-      name: 'Earth',
-      url: 'https://rickandmortyapi.com/api/location/20',
-    },
-    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-    episode: [
-      'https://rickandmortyapi.com/api/episode/1',
-      'https://rickandmortyapi.com/api/episode/2',
-    ],
-    url: 'https://rickandmortyapi.com/api/character/1',
-    created: '2017-11-04T18:48:46.250Z',
-  },
-  {
-    id: 2,
-    name: 'Rick Tommy',
-    species: 'Human',
-    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-  },
-  {
-    id: 3,
-    name: 'She Mary',
-    species: 'Human',
-    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-  },
-  {
-    id: 4,
-    name: 'Hello World',
-    species: 'Human',
-    image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-  },
-]
+const apiPath = 'https://rickandmortyapi.com/api/character'
 
 export const ContactList: React.FC<{}> = () => {
-  const [contactList, SetContactList] = useState(dummyList)
+  const [contactList, SetContactList] = useState([])
   const [searchInput, SetSearchInput] = useState('')
 
   //  contact list by fetching
-  const contactListRef = useRef<null | any>(null)
+  const contactListRef = useRef<null | never[]>(null)
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value)
-
     SetSearchInput(event.target.value)
   }
 
   useEffect(() => {
-    //  fetch api
-    //  do something
+    const fetchContactList = async () => {
+      let result = [] as never[]
 
-    contactListRef.current = contactList
+      try {
+        const response = await fetch(apiPath)
+        const data = await response.json()
+
+        if (
+          response.status < 400 &&
+          response.ok &&
+          data.hasOwnProperty('results')
+        ) {
+          result = data.results
+        }
+      } catch (e) {
+        console.log(e)
+      } finally {
+        SetContactList(result)
+        contactListRef.current = result
+      }
+    }
+
+    //  call api
+    fetchContactList()
   }, [])
 
   //  Change contact list in every search
   useEffect(() => {
-    if (!contactListRef.current) return
+    if (!contactListRef.current || contactListRef.current.length === 0) return
 
     const contactListInstance = [...contactListRef.current]
 
-    const filteredContactList = contactListInstance.filter((contact) => {
+    const filteredContactList = contactListInstance.filter(({ name }) => {
       const formatString = (value: string) => {
         return value.toLowerCase().replace(' ', '')
       }
       const formatedSearchInput = formatString(searchInput)
-      const formatedName = formatString(contact.name)
+      const formatedName = formatString(name)
 
       return formatedName.includes(formatedSearchInput)
     })
@@ -99,8 +75,8 @@ export const ContactList: React.FC<{}> = () => {
         </div>
 
         <div className="grid gap-5 p-5">
-          <></>
           {contactList &&
+            contactList.length !== 0 &&
             contactList.map(({ name, image, species, id }, index) => {
               return (
                 <React.Fragment key={index}>
