@@ -8,6 +8,7 @@ import './styles/main.scss'
 //  components
 import { ContactList } from './components/ContactList'
 import { DummyComponent } from './components/DummyComponent'
+import { ContactDetail } from './components/ContactDetail'
 
 //  Page
 import { Home } from './pages/Home'
@@ -20,10 +21,7 @@ function App() {
           <Route path="/" element={<Home />}>
             <Route path="contact" element={<ContactList />} />
 
-            <Route
-              path="contact/:id"
-              element={<DummyComponent title="character" />}
-            />
+            <Route path="contact/:id" element={<ContactDetail />} />
           </Route>
 
           <Route path="*" element={<DummyComponent title="Not Found" />} />
