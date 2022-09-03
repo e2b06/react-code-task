@@ -1,28 +1,39 @@
-import React from "react";
-import "./styles/main.scss";
-import { SideMenu } from "./components/SideMenu";
+import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 
+//  styles
+import './styles/main.scss'
+
+//  components
+import { DummyComponent } from './components/DummyComponent'
+
+//  Page
+import { Home } from './pages/Home'
+
+//  Home Page
 function App() {
   return (
     <div className="App">
-      {/* <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}>
+            <Route
+              path="contact"
+              element={<DummyComponent title="contact" />}
+            />
 
-      <h1>Welcome to React Router!</h1>
-      <SideMenu />
+            <Route
+              path="contact:id"
+              element={<DummyComponent title="character" />}
+            />
+          </Route>
+
+          <Route path="*" element={<DummyComponent title="Not Found" />} />
+        </Routes>
+      </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
