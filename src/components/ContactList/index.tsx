@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import { ContactItem } from '../ContactItem'
+import { Loading } from '../Loading'
 
 const type = 'character'
 const currentPage = 1
@@ -9,6 +10,7 @@ const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
 export const ContactList: React.FC<{}> = () => {
   const [contactList, SetContactList] = useState([])
   const [searchInput, SetSearchInput] = useState('')
+  const [isLoading, SetIsloading] = useState(true)
 
   //  contact list by fetching
   const contactListRef = useRef<null | never[]>(null)
@@ -37,6 +39,8 @@ export const ContactList: React.FC<{}> = () => {
       } finally {
         SetContactList(result)
         contactListRef.current = result
+
+        SetIsloading(false)
       }
     }
 
@@ -76,10 +80,11 @@ export const ContactList: React.FC<{}> = () => {
           />
         </div>
 
-        <div className="grid gap-5 p-5">
-          {contactList &&
-            contactList.length !== 0 &&
-            contactList.map(({ name, image, species, id }, index) => {
+        {isLoading && <Loading />}
+
+        {contactList && contactList.length !== 0 && (
+          <div className="grid gap-5 p-5">
+            {contactList.map(({ name, image, species, id }, index) => {
               return (
                 <React.Fragment key={index}>
                   <ContactItem
@@ -91,7 +96,8 @@ export const ContactList: React.FC<{}> = () => {
                 </React.Fragment>
               )
             })}
-        </div>
+          </div>
+        )}
       </div>
     </>
   )
