@@ -1,58 +1,51 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { NavLink } from 'react-router-dom'
 
 interface ContactItemProps {
-  imgUrl: string
+  image: string
   name: string
+  type: 'link' | 'header'
   species?: string
-  id: number
+  id?: number
+}
+
+const style = {
+  header: {
+    icon: 'w-auto max-h-[150px] rounded-full mr-5',
+    name: 'font-bold text-2xl',
+  },
+  link: {
+    icon: 'w-auto max-h-[100px] rounded-full mr-5',
+    name: '',
+  },
 }
 
 export const ContactItem: React.FC<ContactItemProps> = ({
-  imgUrl,
+  image,
   name,
   species,
   id,
+  type,
 }) => {
-  return (
-    <>
-      <NavLink
-        to={`/contact/${id}`}
-        key={id}
-        className="component-contact-item flex items-center"
-      >
-        <img
-          src={imgUrl}
-          alt=""
-          className="w-auto max-h-[100px] rounded-full mr-5"
-        />
-        <div className="">
-          <p>{name}</p>
+  const commonClass = 'component-contact-item flex items-center bg-sky-700'
+
+  const content = useMemo(() => {
+    return (
+      <>
+        <img src={image} alt="" className={style[type].icon} />
+        <div className="mr-5">
+          <p className={style[type].name}>{name}</p>
           {species && <p>{species}</p>}
         </div>
-      </NavLink>
-    </>
+      </>
+    )
+  }, [])
+
+  return type === 'link' ? (
+    <NavLink to={`/contact/${id}`} key={id} className={commonClass}>
+      {content}
+    </NavLink>
+  ) : (
+    <div className={commonClass}>{content}</div>
   )
 }
-
-// ;<NavLink to={`/contact/${id}`} key={id} className="flex max-h-[150px]">
-//   <div className="relative w-full">
-//     <img
-//       src={imgUrl}
-//       alt=""
-//       className="absolute top-0 bottom-0 left-0 right-0 w-auto h-full object-contain"
-//     />
-//   </div>
-//   {/* <div className="img-container relative w-full rounded-full overflow-hidden bg-black">
-//   <img
-//     src={imgUrl}
-//     alt=""
-//     className="absolute top-0 bottom-0 left-0 right-0 w-auto h-full object-cover"
-//     // className="w-auto h-full"
-//   />
-// </div> */}
-//   <div>
-//     <p>{name}</p>
-//     {species && <p>{species}</p>}
-//   </div>
-// </NavLink>
