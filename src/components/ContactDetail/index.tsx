@@ -21,8 +21,10 @@ export const ContactDetail: React.FC<{}> = () => {
   useEffect(() => {
     if (!state) return
 
-    const fetchEpisodeList = async (path: string) => {
+    const fetchEpisodeList = async (path: string, times: number) => {
       let result = {}
+
+      const isFinalFetch = times === state.contact.episode.length - 1
 
       try {
         SetIsLoading(true)
@@ -38,6 +40,10 @@ export const ContactDetail: React.FC<{}> = () => {
           result = data
         }
       } catch (e) {
+        if (isFinalFetch) {
+          alert('something error...')
+        }
+
         console.log(e)
       } finally {
         SetEpisodeList((preList) => {
@@ -46,13 +52,16 @@ export const ContactDetail: React.FC<{}> = () => {
             : [...preList, result]
         })
 
-        SetIsLoading(false)
+        if (isFinalFetch) {
+          SetIsLoading(false)
+        }
       }
     }
 
+    //  call api
     for (let index = 0; index < state.contact.episode.length; index++) {
       const path = state.contact.episode[index]
-      fetchEpisodeList(path)
+      fetchEpisodeList(path, index)
     }
   }, [])
 
