@@ -9,7 +9,7 @@ const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
 export const ContactList: React.FC<{}> = () => {
   const [contactList, SetContactList] = useState([] as any[])
   const [searchInput, SetSearchInput] = useState('')
-  const [isLoading, SetIsloading] = useState(true)
+  const [isLoading, SetIsloading] = useState(false)
 
   //  contact list by fetching
   const contactListRef = useRef<null | any[]>(null)
@@ -24,6 +24,8 @@ export const ContactList: React.FC<{}> = () => {
       let result = [] as any[]
 
       try {
+        SetIsloading(true)
+
         const response = await fetch(apiPath)
         const data = await response.json()
 
