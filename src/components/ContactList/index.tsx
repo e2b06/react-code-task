@@ -60,21 +60,11 @@ export const ContactList: React.FC<{}> = () => {
       const formatedSearchInput = formatString(searchInput)
       const formatedName = formatString(name)
 
-      console.log(formatedSearchInput)
-      console.log(formatedName)
-      console.log(formatedName.includes(formatedSearchInput))
-
       return formatedName.includes(formatedSearchInput)
     })
 
-    console.log(filteredContactList)
-
-    SetContactList(() => {
-      return filteredContactList
-    })
+    SetContactList(filteredContactList)
   }, [searchInput])
-
-  console.log(contactList)
 
   return (
     <>
