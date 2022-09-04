@@ -6,16 +6,33 @@ const type = 'character'
 const currentPage = 1
 const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
 
+interface searchInputType {
+  [name: string]: string
+  status: string
+  gender: string
+}
+
 export const ContactList: React.FC<{}> = () => {
   const [contactList, SetContactList] = useState([] as any[])
-  const [searchInput, SetSearchInput] = useState('')
+  const [searchInput, SetSearchInput] = useState({
+    name: '',
+    status: '',
+    gender: '',
+  } as searchInputType)
   const [isLoading, SetIsloading] = useState(false)
 
   //  contact list by fetching
   const contactListRef = useRef<null | any[]>(null)
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    SetSearchInput(event.target.value)
+  const onChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    SetSearchInput((preInut) => {
+      return {
+        ...preInut,
+        [event.target.name]: event.target.value,
+      }
+    })
   }
 
   //  fetch data
@@ -56,17 +73,34 @@ export const ContactList: React.FC<{}> = () => {
   useEffect(() => {
     if (!contactListRef.current || contactListRef.current.length === 0) return
 
+    const formatString = (value: string) => {
+      return value.toLowerCase().replaceAll(' ', '')
+    }
+
     const contactListInstance = [...contactListRef.current]
 
-    const filteredContactList = contactListInstance.filter(({ name }) => {
-      const formatString = (value: string) => {
-        return value.toLowerCase().replaceAll(' ', '')
+    //  format search input
+    let searchInputInstance = { ...searchInput }
+    for (const prop in searchInputInstance) {
+      searchInputInstance = {
+        ...searchInputInstance,
+        [prop]: formatString(searchInputInstance[prop]),
       }
-      const formatedSearchInput = formatString(searchInput)
-      const formatedName = formatString(name)
+    }
 
-      return formatedName.includes(formatedSearchInput)
-    })
+    const filteredContactList = contactListInstance.filter(
+      ({ name, status, gender }) => {
+        const formatedName = formatString(name)
+        const formatedStatus = formatString(status)
+        const formatedGender = formatString(gender)
+
+        return (
+          formatedName.includes(searchInputInstance.name) &&
+          formatedStatus.includes(searchInputInstance.status) &&
+          formatedGender.includes(searchInputInstance.gender)
+        )
+      },
+    )
 
     SetContactList(filteredContactList)
   }, [searchInput])
@@ -81,9 +115,24 @@ export const ContactList: React.FC<{}> = () => {
             type="text"
             className="p-1 rounded-md w-full text-sky-500"
             placeholder="Saerch Characters"
-            value={searchInput}
+            value={searchInput.name}
             onChange={onChange}
+            name="name"
           />
+          <select name="status" onChange={onChange} value={searchInput.status}>
+            <option value="">select an option</option>
+            <option value="alive">Alive</option>
+            <option value="dead">Dead</option>
+            <option value="unknown">Unknown</option>
+          </select>
+
+          <select name="gender" onChange={onChange} value={searchInput.gender}>
+            <option value="">select an option</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="genderless">Genderless</option>
+            <option value="unknown">Unknown</option>
+          </select>
         </div>
 
         {isLoading && <Loading />}
