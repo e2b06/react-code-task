@@ -81,8 +81,6 @@ export const ContactList: React.FC<{}> = () => {
           data.hasOwnProperty('results') &&
           data.hasOwnProperty('info')
         ) {
-          console.log(data)
-
           result = data.results
           isEnd = data.info.pages === nextPage
 
