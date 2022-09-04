@@ -57,7 +57,7 @@ export const ContactDetail: React.FC<{}> = () => {
   }, [])
 
   return location.key !== 'default' && state ? (
-    <div className="component-contact-detail bg-red-500 w-full px-4 py-8 md:p-8 overflow-auto">
+    <div className="component-contact-detail bg-yellow-500 w-full px-4 py-8 md:p-8 overflow-auto">
       <div className="mb-8">
         <ContactItem contact={state.contact} type="header" />
       </div>
