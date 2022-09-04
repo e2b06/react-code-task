@@ -18,8 +18,12 @@ export const SelectItem: React.FC<{
       value={value}
     >
       <option value="">select an option</option>
-      {options.map((option) => {
-        return <option value={option.toLowerCase()}>{option}</option>
+      {options.map((option, index) => {
+        return (
+          <option value={option.toLowerCase()} key={index}>
+            {option}
+          </option>
+        )
       })}
     </select>
   )
