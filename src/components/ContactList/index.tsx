@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-
 import { ContactItem } from '../ContactItem'
 import { Loading } from '../Loading'
 
@@ -61,11 +60,21 @@ export const ContactList: React.FC<{}> = () => {
       const formatedSearchInput = formatString(searchInput)
       const formatedName = formatString(name)
 
+      console.log(formatedSearchInput)
+      console.log(formatedName)
+      console.log(formatedName.includes(formatedSearchInput))
+
       return formatedName.includes(formatedSearchInput)
     })
 
-    SetContactList(filteredContactList)
+    console.log(filteredContactList)
+
+    SetContactList(() => {
+      return filteredContactList
+    })
   }, [searchInput])
+
+  console.log(contactList)
 
   return (
     <>
@@ -87,6 +96,8 @@ export const ContactList: React.FC<{}> = () => {
         {contactList && contactList.length !== 0 && (
           <div className="grid gap-7 p-5">
             {contactList.map(({ name, image, species, id }, index) => {
+              console.log(name)
+
               return (
                 <React.Fragment key={index}>
                   <ContactItem
