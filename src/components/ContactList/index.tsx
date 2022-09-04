@@ -7,20 +7,21 @@ const currentPage = 1
 const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
 
 export const ContactList: React.FC<{}> = () => {
-  const [contactList, SetContactList] = useState([])
+  const [contactList, SetContactList] = useState([] as any[])
   const [searchInput, SetSearchInput] = useState('')
   const [isLoading, SetIsloading] = useState(true)
 
   //  contact list by fetching
-  const contactListRef = useRef<null | never[]>(null)
+  const contactListRef = useRef<null | any[]>(null)
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     SetSearchInput(event.target.value)
   }
 
+  //  fetch data
   useEffect(() => {
     const fetchContactList = async () => {
-      let result = [] as never[]
+      let result = [] as any[]
 
       try {
         const response = await fetch(apiPath)
@@ -85,18 +86,10 @@ export const ContactList: React.FC<{}> = () => {
 
         {contactList && contactList.length !== 0 && (
           <div className="grid gap-7 p-5">
-            {contactList.map(({ name, image, species, id }, index) => {
-              console.log(name)
-
+            {contactList.map((contact, index) => {
               return (
                 <React.Fragment key={index}>
-                  <ContactItem
-                    name={name}
-                    image={image}
-                    species={species}
-                    id={id}
-                    type="link"
-                  />
+                  <ContactItem contact={contact} type="link" />
                 </React.Fragment>
               )
             })}
