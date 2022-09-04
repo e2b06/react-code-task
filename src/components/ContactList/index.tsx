@@ -127,56 +127,51 @@ export const ContactList: React.FC<{}> = () => {
   }, [searchInput])
 
   return (
-    <>
-      <div className="component-contact-list w-full bg-sky-500 overflow-auto">
-        <div className="p-6">
-          <h1 className="mb-4 font-bold text-xl">Contact</h1>
+    <div className="component-contact-list w-full bg-sky-500 overflow-auto">
+      <div className="p-6">
+        <h1 className="mb-4 font-bold text-xl">Contact</h1>
 
-          <input
-            type="text"
-            className="p-1 mb-5 rounded-md w-full text-sky-500"
-            placeholder="Saerch Characters"
-            value={searchInput.name}
-            onChange={onSearchChange}
-            name="name"
-          />
-          <SelectItem
-            name="status"
-            onSearchChange={onSearchChange}
-            value={searchInput.status}
-            options={['Alive', 'Dead', 'Unknown']}
-          />
-          <SelectItem
-            name="gender"
-            onSearchChange={onSearchChange}
-            value={searchInput.gender}
-            options={['Male', 'Female', 'Genderless', 'Unknown']}
-          />
+        <input
+          type="text"
+          className="p-1 mb-5 rounded-md w-full text-sky-500"
+          placeholder="Saerch Characters"
+          value={searchInput.name}
+          onChange={onSearchChange}
+          name="name"
+        />
+        <SelectItem
+          name="status"
+          onSearchChange={onSearchChange}
+          value={searchInput.status}
+          options={['Alive', 'Dead', 'Unknown']}
+        />
+        <SelectItem
+          name="gender"
+          onSearchChange={onSearchChange}
+          value={searchInput.gender}
+          options={['Male', 'Female', 'Genderless', 'Unknown']}
+        />
 
-          {(searchInput.status || searchInput.gender) && (
-            <button
-              className="p-1 rounded-lg bg-red-500"
-              onClick={onCleanFilter}
-            >
-              Clean Filter
-            </button>
-          )}
-        </div>
-
-        {isLoading && <Loading />}
-
-        {contactList && contactList.length !== 0 && (
-          <div className="grid gap-7 p-5">
-            {contactList.map((contact, index) => {
-              return (
-                <React.Fragment key={index}>
-                  <ContactItem contact={contact} type="link" />
-                </React.Fragment>
-              )
-            })}
-          </div>
+        {(searchInput.status || searchInput.gender) && (
+          <button className="p-1 rounded-lg bg-red-500" onClick={onCleanFilter}>
+            Clean Filter
+          </button>
         )}
       </div>
-    </>
+
+      {isLoading && <Loading />}
+
+      {contactList && contactList.length !== 0 && (
+        <div className="grid gap-7 p-5">
+          {contactList.map((contact, index) => {
+            return (
+              <React.Fragment key={index}>
+                <ContactItem contact={contact} type="link" />
+              </React.Fragment>
+            )
+          })}
+        </div>
+      )}
+    </div>
   )
 }
