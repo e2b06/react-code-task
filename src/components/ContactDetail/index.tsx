@@ -10,7 +10,7 @@ export const ContactDetail: React.FC<{}> = () => {
 
   const state = location.state as ContactRouterState | null
 
-  return location.key !== 'default' && state?.contact ? (
+  return location.key !== 'default' && state ? (
     <div className="component-contact-detail bg-red-500 w-full px-4 py-8 md:p-8">
       <div className="mb-8">
         <ContactItem contact={state?.contact} type="header" />
