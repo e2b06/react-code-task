@@ -23,8 +23,8 @@ export const ContactList: React.FC<{}> = () => {
 
   const [isBottom, SetIsBottom] = useState(true)
 
-  //
   const [currentPage, SetCurrentPage] = useState(1)
+  const [isPageEnd, SetIsPageEnd] = useState(false)
 
   const type = 'character'
   const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
@@ -59,13 +59,15 @@ export const ContactList: React.FC<{}> = () => {
       !isBottom ||
       searchInput.name ||
       searchInput.status ||
-      searchInput.gender
+      searchInput.gender ||
+      isPageEnd
     )
       return
 
     const fetchContactList = async () => {
       let result = [] as any[]
       let nextPage = currentPage
+      let isEnd = false
 
       try {
         SetIsloading(true)
@@ -76,9 +78,16 @@ export const ContactList: React.FC<{}> = () => {
         if (
           response.status < 400 &&
           response.ok &&
-          data.hasOwnProperty('results')
+          data.hasOwnProperty('results') &&
+          data.hasOwnProperty('info')
         ) {
+          console.log(data)
+
           result = data.results
+          isEnd = data.info.pages === nextPage
+
+          if (isEnd) return
+
           nextPage += 1
         }
       } catch (e) {
@@ -93,6 +102,7 @@ export const ContactList: React.FC<{}> = () => {
         SetIsBottom(false)
 
         SetCurrentPage(nextPage)
+        SetIsPageEnd(isEnd)
       }
     }
 
@@ -106,10 +116,6 @@ export const ContactList: React.FC<{}> = () => {
 
     const getFormatedObject = (object: SearchInputType) => {
       const formatString = (value: string) => {
-        console.log(object)
-
-        console.log(value)
-
         return value.toLowerCase().replaceAll(' ', '')
       }
 
