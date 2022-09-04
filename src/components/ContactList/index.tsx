@@ -3,10 +3,6 @@ import { ContactItem } from '../ContactItem'
 import { SelectItem, OnSearchChangeType } from './SelectItem'
 import { Loading } from '../Loading'
 
-const type = 'character'
-const currentPage = 1
-const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
-
 interface SearchInputType {
   [name: string]: string
   status: string
@@ -26,6 +22,12 @@ export const ContactList: React.FC<{}> = () => {
   const contactListRef = useRef<null | any[]>(null)
 
   const [isBottom, SetIsBottom] = useState(true)
+
+  //
+  const [currentPage, SetCurrentPage] = useState(1)
+
+  const type = 'character'
+  const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
 
   const onSearchChange: OnSearchChangeType = (event) => {
     SetSearchInput((preInut) => {
@@ -57,6 +59,7 @@ export const ContactList: React.FC<{}> = () => {
 
     const fetchContactList = async () => {
       let result = [] as any[]
+      let nextPage = currentPage
 
       try {
         SetIsloading(true)
@@ -70,6 +73,7 @@ export const ContactList: React.FC<{}> = () => {
           data.hasOwnProperty('results')
         ) {
           result = data.results
+          nextPage += 1
         }
       } catch (e) {
         alert('something error...')
@@ -81,6 +85,8 @@ export const ContactList: React.FC<{}> = () => {
 
         SetIsloading(false)
         SetIsBottom(false)
+
+        SetCurrentPage(nextPage)
       }
     }
 
