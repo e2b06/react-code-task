@@ -25,6 +25,8 @@ export const ContactList: React.FC<{}> = () => {
   //  contact list by fetching
   const contactListRef = useRef<null | any[]>(null)
 
+  const [isBottom, SetIsBottom] = useState(true)
+
   const onSearchChange: OnSearchChangeType = (event) => {
     SetSearchInput((preInut) => {
       return {
@@ -44,8 +46,15 @@ export const ContactList: React.FC<{}> = () => {
     })
   }
 
+  const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
+    const { scrollHeight, scrollTop, clientHeight } = event.currentTarget
+    SetIsBottom(scrollHeight - scrollTop === clientHeight)
+  }
+
   //  fetch data
   useEffect(() => {
+    if (!isBottom) return
+
     const fetchContactList = async () => {
       let result = [] as any[]
 
@@ -67,16 +76,17 @@ export const ContactList: React.FC<{}> = () => {
 
         console.log(e)
       } finally {
-        SetContactList(result)
-        contactListRef.current = result
+        SetContactList((preList) => [...preList, ...result])
+        contactListRef.current = [contactListRef.current, ...result]
 
         SetIsloading(false)
+        SetIsBottom(false)
       }
     }
 
     //  call api
     fetchContactList()
-  }, [])
+  }, [isBottom])
 
   //  Change contact list in every search
   useEffect(() => {
@@ -127,7 +137,10 @@ export const ContactList: React.FC<{}> = () => {
   }, [searchInput])
 
   return (
-    <div className="component-contact-list w-full bg-sky-500 overflow-auto">
+    <div
+      className="component-contact-list w-full bg-sky-500 overflow-auto"
+      onScroll={handleScroll}
+    >
       <div className="p-6">
         <h1 className="mb-4 font-bold text-xl">Contact</h1>
 
@@ -159,8 +172,6 @@ export const ContactList: React.FC<{}> = () => {
         )}
       </div>
 
-      {isLoading && <Loading />}
-
       {contactList && contactList.length !== 0 && (
         <div className="grid gap-7 p-5">
           {contactList.map((contact, index) => {
@@ -172,6 +183,8 @@ export const ContactList: React.FC<{}> = () => {
           })}
         </div>
       )}
+
+      {isLoading && <Loading />}
     </div>
   )
 }
