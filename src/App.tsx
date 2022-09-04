@@ -7,7 +7,7 @@ import './styles/main.scss'
 
 //  components
 import { ContactList } from './components/ContactList'
-import { DummyComponent } from './components/DummyComponent'
+import { Error } from './components/Error'
 import { ContactDetail } from './components/ContactDetail'
 
 //  Page
@@ -24,7 +24,7 @@ function App() {
             <Route path="contact/:id" element={<ContactDetail />} />
           </Route>
 
-          <Route path="*" element={<DummyComponent title="Not Found" />} />
+          <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>
     </div>
