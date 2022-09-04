@@ -52,8 +52,6 @@ export const ContactDetail: React.FC<{}> = () => {
     }
   }, [])
 
-  console.log(episodeList)
-
   return location.key !== 'default' && state ? (
     <div className="component-contact-detail bg-red-500 w-full px-4 py-8 md:p-8 overflow-auto">
       <div className="mb-8">
