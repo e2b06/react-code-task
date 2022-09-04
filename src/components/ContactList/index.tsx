@@ -37,6 +37,8 @@ export const ContactList: React.FC<{}> = () => {
           result = data.results
         }
       } catch (e) {
+        alert('something error...')
+
         console.log(e)
       } finally {
         SetContactList(result)
