@@ -55,7 +55,13 @@ export const ContactList: React.FC<{}> = () => {
 
   //  fetch data
   useEffect(() => {
-    if (!isBottom) return
+    if (
+      !isBottom ||
+      searchInput.name ||
+      searchInput.status ||
+      searchInput.gender
+    )
+      return
 
     const fetchContactList = async () => {
       let result = [] as any[]
@@ -81,7 +87,7 @@ export const ContactList: React.FC<{}> = () => {
         console.log(e)
       } finally {
         SetContactList((preList) => [...preList, ...result])
-        contactListRef.current = [contactListRef.current, ...result]
+        contactListRef.current = [...contactList, ...result]
 
         SetIsloading(false)
         SetIsBottom(false)
@@ -100,6 +106,10 @@ export const ContactList: React.FC<{}> = () => {
 
     const getFormatedObject = (object: SearchInputType) => {
       const formatString = (value: string) => {
+        console.log(object)
+
+        console.log(value)
+
         return value.toLowerCase().replaceAll(' ', '')
       }
 
