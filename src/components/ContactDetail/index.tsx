@@ -6,6 +6,10 @@ import { ContactItem, ContactRouterState } from '../ContactItem'
 import { Loading } from '../Loading'
 import { Error } from '../Error'
 
+const TableSpan: React.FC<{ text: string }> = ({ text }) => {
+  return <p className="grid-span-1 text-center">{text}</p>
+}
+
 export const ContactDetail: React.FC<{}> = () => {
   const location = useLocation()
 
@@ -69,17 +73,17 @@ export const ContactDetail: React.FC<{}> = () => {
 
       {isLoading && <Loading />}
 
-      {episodeList.length !== 0 && (
+      {episodeList && episodeList.length !== 0 && (
         <>
           <h1 className="mb-5 font-bold text-xl">Epsiode</h1>
           <div className="grid grid-cols-4 gap-3 items-center md:gap-5">
             {episodeList.map(({ name, air_date, episode, created }, index) => {
               return (
                 <React.Fragment key={index}>
-                  <h1 className="grid-span-1 text-center">{name}</h1>
-                  <h1 className="grid-span-1 text-center">{air_date}</h1>
-                  <h1 className="grid-span-1 text-center">{episode}</h1>
-                  <h1 className="grid-span-1 text-center">{created}</h1>
+                  <TableSpan text={name} />
+                  <TableSpan text={air_date} />
+                  <TableSpan text={episode} />
+                  <TableSpan text={created} />
                 </React.Fragment>
               )
             })}
