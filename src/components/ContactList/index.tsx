@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ContactItem } from '../ContactItem'
+import { SelectItem, OnSearchChangeType } from './SelectItem'
 import { Loading } from '../Loading'
 
 const type = 'character'
 const currentPage = 1
 const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
 
-interface searchInputType {
+interface SearchInputType {
   [name: string]: string
   status: string
   gender: string
@@ -18,15 +19,13 @@ export const ContactList: React.FC<{}> = () => {
     name: '',
     status: '',
     gender: '',
-  } as searchInputType)
+  } as SearchInputType)
   const [isLoading, SetIsloading] = useState(false)
 
   //  contact list by fetching
   const contactListRef = useRef<null | any[]>(null)
 
-  const onSearchChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
+  const onSearchChange: OnSearchChangeType = (event) => {
     SetSearchInput((preInut) => {
       return {
         ...preInut,
@@ -83,7 +82,7 @@ export const ContactList: React.FC<{}> = () => {
   useEffect(() => {
     if (!contactListRef.current || contactListRef.current.length === 0) return
 
-    const getFormatedObject = (object: searchInputType) => {
+    const getFormatedObject = (object: SearchInputType) => {
       const formatString = (value: string) => {
         return value.toLowerCase().replaceAll(' ', '')
       }
@@ -141,30 +140,18 @@ export const ContactList: React.FC<{}> = () => {
             onChange={onSearchChange}
             name="name"
           />
-          <select
+          <SelectItem
             name="status"
-            className="mr-2"
-            onChange={onSearchChange}
+            onSearchChange={onSearchChange}
             value={searchInput.status}
-          >
-            <option value="">select an option</option>
-            <option value="alive">Alive</option>
-            <option value="dead">Dead</option>
-            <option value="unknown">Unknown</option>
-          </select>
-
-          <select
+            options={['Alive', 'Dead', 'Unknown']}
+          />
+          <SelectItem
             name="gender"
-            className="mr-2"
-            onChange={onSearchChange}
+            onSearchChange={onSearchChange}
             value={searchInput.gender}
-          >
-            <option value="">select an option</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="genderless">Genderless</option>
-            <option value="unknown">Unknown</option>
-          </select>
+            options={['Male', 'Female', 'Genderless', 'Unknown']}
+          />
 
           {(searchInput.status || searchInput.gender) && (
             <button
