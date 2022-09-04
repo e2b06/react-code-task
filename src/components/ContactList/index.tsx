@@ -24,13 +24,23 @@ export const ContactList: React.FC<{}> = () => {
   //  contact list by fetching
   const contactListRef = useRef<null | any[]>(null)
 
-  const onChange = (
+  const onSearchChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     SetSearchInput((preInut) => {
       return {
         ...preInut,
         [event.target.name]: event.target.value,
+      }
+    })
+  }
+
+  const onCleanFilter = () => {
+    SetSearchInput((preInput) => {
+      return {
+        ...preInput,
+        status: '',
+        gender: '',
       }
     })
   }
@@ -73,31 +83,43 @@ export const ContactList: React.FC<{}> = () => {
   useEffect(() => {
     if (!contactListRef.current || contactListRef.current.length === 0) return
 
-    const formatString = (value: string) => {
-      return value.toLowerCase().replaceAll(' ', '')
+    const getFormatedObject = (object: searchInputType) => {
+      const formatString = (value: string) => {
+        return value.toLowerCase().replaceAll(' ', '')
+      }
+
+      let instance = { ...object }
+
+      for (const prop in instance) {
+        instance = {
+          ...instance,
+          [prop]: formatString(instance[prop]),
+        }
+      }
+
+      return instance
     }
 
     const contactListInstance = [...contactListRef.current]
 
-    //  format search input
-    let searchInputInstance = { ...searchInput }
-    for (const prop in searchInputInstance) {
-      searchInputInstance = {
-        ...searchInputInstance,
-        [prop]: formatString(searchInputInstance[prop]),
-      }
-    }
+    //  format search input object
+    const { name: sName, status: sStatus, gender: sGender } = getFormatedObject(
+      searchInput,
+    )
 
     const filteredContactList = contactListInstance.filter(
       ({ name, status, gender }) => {
-        const formatedName = formatString(name)
-        const formatedStatus = formatString(status)
-        const formatedGender = formatString(gender)
+        //  format data instance object
+        const {
+          name: oName,
+          status: oStatus,
+          gender: oGender,
+        } = getFormatedObject({ name, status, gender })
 
         return (
-          formatedName.includes(searchInputInstance.name) &&
-          formatedStatus.includes(searchInputInstance.status) &&
-          formatedGender.includes(searchInputInstance.gender)
+          oName.includes(sName) &&
+          oStatus.includes(sStatus) &&
+          oGender.includes(sGender)
         )
       },
     )
@@ -113,26 +135,45 @@ export const ContactList: React.FC<{}> = () => {
 
           <input
             type="text"
-            className="p-1 rounded-md w-full text-sky-500"
+            className="p-1 mb-5 rounded-md w-full text-sky-500"
             placeholder="Saerch Characters"
             value={searchInput.name}
-            onChange={onChange}
+            onChange={onSearchChange}
             name="name"
           />
-          <select name="status" onChange={onChange} value={searchInput.status}>
+          <select
+            name="status"
+            className="mr-2"
+            onChange={onSearchChange}
+            value={searchInput.status}
+          >
             <option value="">select an option</option>
             <option value="alive">Alive</option>
             <option value="dead">Dead</option>
             <option value="unknown">Unknown</option>
           </select>
 
-          <select name="gender" onChange={onChange} value={searchInput.gender}>
+          <select
+            name="gender"
+            className="mr-2"
+            onChange={onSearchChange}
+            value={searchInput.gender}
+          >
             <option value="">select an option</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="genderless">Genderless</option>
             <option value="unknown">Unknown</option>
           </select>
+
+          {(searchInput.status || searchInput.gender) && (
+            <button
+              className="p-1 rounded-lg bg-red-500"
+              onClick={onCleanFilter}
+            >
+              Clean Filter
+            </button>
+          )}
         </div>
 
         {isLoading && <Loading />}
