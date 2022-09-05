@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ContactItem } from "../ContactItem";
+
+//  Components
 import { SelectItem, OnSearchChangeType } from "./SelectItem";
+import { ContactItem } from "../ContactItem";
 import { Loading } from "../Loading";
 
 interface SearchInputType {

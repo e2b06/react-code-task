@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-//  component
+//  Components
+import { Table, TableSpan } from "./Table";
 import { ContactItem, ContactRouterState } from "../ContactItem";
 import { Loading } from "../Loading";
 import { Error } from "../Error";
-import { Table, TableSpan } from "./Table";
 
 export const ContactDetail: React.FC<{}> = () => {
   const location = useLocation();
