@@ -16,7 +16,8 @@ export const ContactDetail: React.FC<{}> = () => {
   const [isLoading, SetIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!state) return;
+    if (!state || !state.contact || Object.keys(state.contact).length === 0)
+      return;
 
     const fetchEpisodeList = async (path: string, times: number) => {
       let result = {};
