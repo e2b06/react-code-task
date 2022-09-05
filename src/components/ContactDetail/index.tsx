@@ -1,71 +1,68 @@
-import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 //  component
-import { ContactItem, ContactRouterState } from '../ContactItem'
-import { Loading } from '../Loading'
-import { Error } from '../Error'
-
-const TableSpan: React.FC<{ text: string }> = ({ text }) => {
-  return <p className="grid-span-1 text-center">{text}</p>
-}
+import { ContactItem, ContactRouterState } from "../ContactItem";
+import { Loading } from "../Loading";
+import { Error } from "../Error";
+import { Table, TableSpan } from "./Table";
 
 export const ContactDetail: React.FC<{}> = () => {
-  const location = useLocation()
+  const location = useLocation();
 
-  const state = location.state as ContactRouterState | null
+  const state = location.state as ContactRouterState | null;
 
-  const [episodeList, SetEpisodeList] = useState([] as any[])
-  const [isLoading, SetIsLoading] = useState(false)
+  const [episodeList, SetEpisodeList] = useState([] as any[]);
+  const [isLoading, SetIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!state) return
+    if (!state) return;
 
     const fetchEpisodeList = async (path: string, times: number) => {
-      let result = {}
+      let result = {};
 
-      const isFinalFetch = times === state.contact.episode.length - 1
+      const isFinalFetch = times === state.contact.episode.length - 1;
 
       try {
-        SetIsLoading(true)
+        SetIsLoading(true);
 
-        const response = await fetch(`${path}`)
-        const data = await response.json()
+        const response = await fetch(`${path}`);
+        const data = await response.json();
 
         if (
           response.status < 400 &&
           response.ok &&
-          !data.hasOwnProperty('error')
+          !data.hasOwnProperty("error")
         ) {
-          result = data
+          result = data;
         }
       } catch (e) {
         if (isFinalFetch) {
-          alert('something error...')
+          alert("something error...");
         }
 
-        console.log(e)
+        console.log(e);
       } finally {
         SetEpisodeList((preList) => {
           return Object.keys(result).length === 0
             ? preList
-            : [...preList, result]
-        })
+            : [...preList, result];
+        });
 
         if (isFinalFetch) {
-          SetIsLoading(false)
+          SetIsLoading(false);
         }
       }
-    }
+    };
 
     //  call api
     for (let index = 0; index < state.contact.episode.length; index++) {
-      const path = state.contact.episode[index]
-      fetchEpisodeList(path, index)
+      const path = state.contact.episode[index];
+      fetchEpisodeList(path, index);
     }
-  }, [])
+  }, [state]);
 
-  return location.key !== 'default' && state ? (
+  return location.key !== "default" && state ? (
     <div className="component-contact-detail bg-yellow-500 w-full px-4 py-8 md:p-8 overflow-auto">
       <div className="mb-8">
         <ContactItem contact={state.contact} type="header" />
@@ -85,7 +82,7 @@ export const ContactDetail: React.FC<{}> = () => {
       {episodeList && episodeList.length !== 0 && (
         <>
           <h1 className="mb-5 font-bold text-xl">Epsiode</h1>
-          <div className="grid grid-cols-4 gap-3 items-center md:gap-5">
+          <Table>
             {episodeList.map(({ name, air_date, episode, created }, index) => {
               return (
                 <React.Fragment key={index}>
@@ -94,13 +91,13 @@ export const ContactDetail: React.FC<{}> = () => {
                   <TableSpan text={episode} />
                   <TableSpan text={created} />
                 </React.Fragment>
-              )
+              );
             })}
-          </div>
+          </Table>
         </>
       )}
     </div>
   ) : (
     <Error />
-  )
-}
+  );
+};
