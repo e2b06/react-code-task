@@ -28,6 +28,8 @@ export const ContactList: React.FC<{}> = () => {
   const [currentPage, SetCurrentPage] = useState(1)
   const [isPageEnd, SetIsPageEnd] = useState(false)
 
+  const [isError, SetIsError] = useState(false)
+
   const type = 'character'
   const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
 
@@ -59,7 +61,7 @@ export const ContactList: React.FC<{}> = () => {
   //  fetch data
   useEffect(() => {
     if (
-      !(isBottom && !isLoading) ||
+      !(isBottom && !isLoading && !isError) ||
       searchInput.name ||
       searchInput.status ||
       searchInput.gender ||
@@ -71,12 +73,15 @@ export const ContactList: React.FC<{}> = () => {
       let result = [] as any[]
       let nextPage = currentPage
       let isEnd = false
+      let error = true
 
       try {
         SetIsloading(true)
 
         const response = await fetch(apiPath)
         const data = await response.json()
+
+        console.log(data)
 
         if (
           response.status < 400 &&
@@ -86,6 +91,7 @@ export const ContactList: React.FC<{}> = () => {
         ) {
           result = data.results
           isEnd = data.info.pages === nextPage
+          error = false
 
           if (isEnd) return
 
@@ -103,6 +109,7 @@ export const ContactList: React.FC<{}> = () => {
         SetIsBottom(false)
         SetCurrentPage(nextPage)
         SetIsPageEnd(isEnd)
+        SetIsError(error)
       }
     }
 
