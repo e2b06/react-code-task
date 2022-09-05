@@ -107,7 +107,15 @@ export const ContactList: React.FC<{}> = () => {
 
     //  call api
     fetchContactList();
-  }, [isBottom]);
+  }, [
+    apiPath,
+    contactList,
+    currentPage,
+    isBottom,
+    isLoading,
+    isPageEnd,
+    searchInput,
+  ]);
 
   //  Change contact list in every search
   useEffect(() => {
