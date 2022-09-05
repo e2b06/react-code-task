@@ -199,11 +199,7 @@ export const ContactList: React.FC<{}> = () => {
       {contactList && contactList.length !== 0 && (
         <div className="grid gap-7 p-5">
           {contactList.map((contact, index) => {
-            return (
-              <React.Fragment key={index}>
-                <ContactItem contact={contact} type="link" />
-              </React.Fragment>
-            );
+            return <ContactItem contact={contact} type="link" key={index} />;
           })}
         </div>
       )}
