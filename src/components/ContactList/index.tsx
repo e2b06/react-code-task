@@ -60,7 +60,8 @@ export const ContactList: React.FC<{}> = () => {
       searchInput.name ||
       searchInput.status ||
       searchInput.gender ||
-      isPageEnd
+      isPageEnd ||
+      isLoading
     )
       return;
 
@@ -97,8 +98,6 @@ export const ContactList: React.FC<{}> = () => {
         contactListRef.current = [...contactList, ...result];
 
         SetIsloading(false);
-        SetIsBottom(false);
-
         SetCurrentPage(nextPage);
         SetIsPageEnd(isEnd);
       }
