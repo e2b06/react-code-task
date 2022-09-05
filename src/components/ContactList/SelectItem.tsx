@@ -13,7 +13,7 @@ export const SelectItem: React.FC<{
   return (
     <select
       name={name}
-      className="mr-2"
+      className="p-1 mr-2"
       onChange={onSearchChange}
       value={value}
     >
