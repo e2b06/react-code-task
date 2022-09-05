@@ -1,57 +1,57 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { ContactItem } from '../ContactItem'
-import { SelectItem, OnSearchChangeType } from './SelectItem'
-import { Loading } from '../Loading'
+import React, { useState, useEffect, useRef } from "react";
+import { ContactItem } from "../ContactItem";
+import { SelectItem, OnSearchChangeType } from "./SelectItem";
+import { Loading } from "../Loading";
 
 interface SearchInputType {
-  [name: string]: string
-  status: string
-  gender: string
+  [name: string]: string;
+  status: string;
+  gender: string;
 }
 
 export const ContactList: React.FC<{}> = () => {
-  const [contactList, SetContactList] = useState([] as any[])
+  const [contactList, SetContactList] = useState([] as any[]);
   const [searchInput, SetSearchInput] = useState({
-    name: '',
-    status: '',
-    gender: '',
-  } as SearchInputType)
-  const [isLoading, SetIsloading] = useState(false)
+    name: "",
+    status: "",
+    gender: "",
+  } as SearchInputType);
+  const [isLoading, SetIsloading] = useState(false);
 
   //  contact list by fetching
-  const contactListRef = useRef<null | any[]>(null)
+  const contactListRef = useRef<null | any[]>(null);
 
-  const [isBottom, SetIsBottom] = useState(true)
+  const [isBottom, SetIsBottom] = useState(true);
 
-  const [currentPage, SetCurrentPage] = useState(1)
-  const [isPageEnd, SetIsPageEnd] = useState(false)
+  const [currentPage, SetCurrentPage] = useState(1);
+  const [isPageEnd, SetIsPageEnd] = useState(false);
 
-  const type = 'character'
-  const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`
+  const type = "character";
+  const apiPath = `https://rickandmortyapi.com/api/${type}?page=${currentPage}`;
 
   const onSearchChange: OnSearchChangeType = (event) => {
     SetSearchInput((preInut) => {
       return {
         ...preInut,
         [event.target.name]: event.target.value,
-      }
-    })
-  }
+      };
+    });
+  };
 
   const onCleanFilter = () => {
     SetSearchInput((preInput) => {
       return {
         ...preInput,
-        status: '',
-        gender: '',
-      }
-    })
-  }
+        status: "",
+        gender: "",
+      };
+    });
+  };
 
   const handleScroll = (event: React.UIEvent<HTMLDivElement>) => {
-    const { scrollHeight, scrollTop, clientHeight } = event.currentTarget
-    SetIsBottom(scrollHeight - scrollTop === clientHeight)
-  }
+    const { scrollHeight, scrollTop, clientHeight } = event.currentTarget;
+    SetIsBottom(scrollHeight - scrollTop === clientHeight);
+  };
 
   //  fetch data
   useEffect(() => {
@@ -62,79 +62,81 @@ export const ContactList: React.FC<{}> = () => {
       searchInput.gender ||
       isPageEnd
     )
-      return
+      return;
 
     const fetchContactList = async () => {
-      let result = [] as any[]
-      let nextPage = currentPage
-      let isEnd = false
+      let result = [] as any[];
+      let nextPage = currentPage;
+      let isEnd = false;
 
       try {
-        SetIsloading(true)
+        SetIsloading(true);
 
-        const response = await fetch(apiPath)
-        const data = await response.json()
+        const response = await fetch(apiPath);
+        const data = await response.json();
 
         if (
           response.status < 400 &&
           response.ok &&
-          data.hasOwnProperty('results') &&
-          data.hasOwnProperty('info')
+          data.hasOwnProperty("results") &&
+          data.hasOwnProperty("info")
         ) {
-          result = data.results
-          isEnd = data.info.pages === nextPage
+          result = data.results;
+          isEnd = data.info.pages === nextPage;
 
-          if (isEnd) return
+          if (isEnd) return;
 
-          nextPage += 1
+          nextPage += 1;
         }
       } catch (e) {
-        alert('something error...')
+        alert("something error...");
 
-        console.log(e)
+        console.log(e);
       } finally {
-        SetContactList((preList) => [...preList, ...result])
-        contactListRef.current = [...contactList, ...result]
+        SetContactList((preList) => [...preList, ...result]);
+        contactListRef.current = [...contactList, ...result];
 
-        SetIsloading(false)
-        SetIsBottom(false)
+        SetIsloading(false);
+        SetIsBottom(false);
 
-        SetCurrentPage(nextPage)
-        SetIsPageEnd(isEnd)
+        SetCurrentPage(nextPage);
+        SetIsPageEnd(isEnd);
       }
-    }
+    };
 
     //  call api
-    fetchContactList()
-  }, [isBottom])
+    fetchContactList();
+  }, [isBottom]);
 
   //  Change contact list in every search
   useEffect(() => {
-    if (!contactListRef.current || contactListRef.current.length === 0) return
+    if (!contactListRef.current || contactListRef.current.length === 0) return;
 
     const getFormatedObject = (object: SearchInputType) => {
       const formatString = (value: string) => {
-        return value.toLowerCase().replaceAll(' ', '')
-      }
+        return value.toLowerCase().replaceAll(" ", "");
+      };
 
-      let instance = { ...object }
+      let instance = { ...object };
 
       for (const prop in instance) {
         instance = {
           ...instance,
           [prop]: formatString(instance[prop]),
-        }
+        };
       }
 
-      return instance
-    }
+      return instance;
+    };
 
-    const contactListInstance = [...contactListRef.current]
+    const contactListInstance = [...contactListRef.current];
 
     //  format search input object
-    const { name: sName, status: sStatus, gender: sGender } = getFormatedObject(
-      searchInput,
-    )
+    const {
+      name: sName,
+      status: sStatus,
+      gender: sGender,
+    } = getFormatedObject(searchInput);
 
     const filteredContactList = contactListInstance.filter(
       ({ name, status, gender }) => {
@@ -143,25 +145,25 @@ export const ContactList: React.FC<{}> = () => {
           name: oName,
           status: oStatus,
           gender: oGender,
-        } = getFormatedObject({ name, status, gender })
+        } = getFormatedObject({ name, status, gender });
 
         return (
           oName.includes(sName) &&
           oStatus.includes(sStatus) &&
           oGender.includes(sGender)
-        )
-      },
-    )
+        );
+      }
+    );
 
-    SetContactList(filteredContactList)
-  }, [searchInput])
+    SetContactList(filteredContactList);
+  }, [searchInput]);
 
   return (
     <div
       className="component-contact-list w-full bg-sky-500 overflow-auto"
       onScroll={handleScroll}
     >
-      <div className="p-6">
+      <div className="px-6 pt-6">
         <h1 className="mb-4 font-bold text-xl">Contact</h1>
 
         <input
@@ -176,17 +178,20 @@ export const ContactList: React.FC<{}> = () => {
           name="status"
           onSearchChange={onSearchChange}
           value={searchInput.status}
-          options={['Alive', 'Dead', 'Unknown']}
+          options={["Alive", "Dead", "Unknown"]}
         />
         <SelectItem
           name="gender"
           onSearchChange={onSearchChange}
           value={searchInput.gender}
-          options={['Male', 'Female', 'Genderless', 'Unknown']}
+          options={["Male", "Female", "Genderless", "Unknown"]}
         />
 
         {(searchInput.status || searchInput.gender) && (
-          <button className="p-1 rounded-lg bg-red-500" onClick={onCleanFilter}>
+          <button
+            className="p-1 mb-3 rounded-lg bg-red-500"
+            onClick={onCleanFilter}
+          >
             Clean Filter
           </button>
         )}
@@ -199,12 +204,12 @@ export const ContactList: React.FC<{}> = () => {
               <React.Fragment key={index}>
                 <ContactItem contact={contact} type="link" />
               </React.Fragment>
-            )
+            );
           })}
         </div>
       )}
 
       {isLoading && <Loading />}
     </div>
-  )
-}
+  );
+};
